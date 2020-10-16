@@ -1,0 +1,401 @@
+$Fonts: 'Muli', Geneva, Verdana, sans-serif
+$FontColor: #F8F9FA
+$ButtonColor: #07A298
+$HeaderBackground: #2C3138
+$BackgroundColor: #33333C
+$BackgroundAccent: #37373F
+$RedAccent: #DA3738
+$DarkRedAccent: #391111
+$DarkGreenAccent: #006d66
+$GreenAccent: #77CEC9
+$LightGreenAccent: #D1F2F0
+$White: #FFFFFF
+$Black: #000000
+$Level1: #da9e37
+$Level2: #da6a37
+
+
+*
+    margin: 0
+    padding: 0
+    border: 0
+    outline: 0
+    font-size: 100%
+    vertical-align: baseline
+    background: transparent
+    list-style-type: none
+
+body
+    margin: 0
+    font-family: $Fonts
+    color: $FontColor
+    background-color: $BackgroundColor
+    position: relative
+    overflow-x: hidden
+    overflow-y: hidden
+
+.hidden
+    display: none
+
+.fas
+    color: $FontColor
+
+.fas.fa-bolt
+    color: $GreenAccent
+
+.btn
+    margin: 5px
+    padding: 10px 15px
+    background-color: $ButtonColor
+    border-radius: 3px
+    min-width: 100px
+    color: $FontColor
+    box-shadow: 3px 3px 6px rgb(0,0,0,0.3)
+    cursor: pointer
+
+.btn2
+    margin: 5px
+    padding: 7px 12px
+    background-color: $ButtonColor
+    border-radius: 3px
+    min-width: 100px
+    color: $FontColor
+    box-shadow: 3px 3px 6px rgb(0,0,0,0.3)
+    cursor: pointer
+
+.btn--control_btn
+    flex-basis: 75%
+
+.btn:active
+    background-color: $DarkGreenAccent
+
+.container--header
+    display: flex
+    align-items: center
+    position: fixed
+    top: 0
+    left: 0
+    width: 100%
+    z-index: 1000
+    background-color: $HeaderBackground
+    box-shadow: 0 3px 6px rgba(0,0,0,.3)
+    height: 90px
+
+.container--car_info
+    padding: 10px 0
+    margin: auto
+    width: 70%
+    text-align: center
+
+.container--car_info h1
+    font-size: 15px
+
+.container--car_info p,
+.container--car_info i
+    font-size: 13px
+
+.container--logout_menu
+    position: absolute
+    top: 36px
+    right: 15px
+    font-size: 16px
+    cursor: pointer
+
+.container--logout_menu i
+    font-size: 27px
+
+.logout-button
+    background-color: $RedAccent
+    position: absolute
+    top: 30px
+    right: -10px
+
+.logout-button:active
+    background-color: $DarkRedAccent
+
+.container--main_section
+    padding-top: 25px
+    max-width: 768px
+    margin: auto
+
+.container--car_image
+    text-align: center
+    background-color: $BackgroundAccent
+    box-shadow: 1px 0 6px rgb(0,0,0,0.3)
+    height: calc(100vh - 25px)
+
+.container--car_image img
+    max-width: 90%
+    left: 0
+    right: 0
+    margin: 5% auto
+    position: fixed
+    top: 100px
+
+.container--control_btn
+    position: fixed
+    bottom: 10px
+    text-align: center
+    width: 100%
+    max-width: 768px
+    margin: auto
+    display: flex
+    flex-wrap: wrap
+    justify-content: center
+
+.modal
+    display: none
+    position: fixed
+    width:100%
+    height: 100%
+    top: 0
+    left: 0
+    z-index: 2000
+    overflow: auto
+    background-color: rgb(0,0,0)
+    background-color: rgba(0,0,0,0.4)
+
+.modal-content
+    background-color: $BackgroundColor
+    width: 310px
+    margin: auto
+    margin-top: 75px
+    padding: 10px 0
+    border-radius: 5px
+    text-align: center
+
+.modal pre[class*="language-"]
+    margin: 28px auto 0 auto
+    width: auto
+    font-size: .8em
+    overflow: scroll
+
+.diagnostics-buttons
+    display: flex
+    flex-wrap: wrap
+
+.control-buttons
+    display: flex
+    flex-wrap: wrap
+
+.container--modal_login
+    background-color: $BackgroundColor
+    width: 100%
+    height: 100%
+
+.container--modal_diagnostics
+    background-color: $BackgroundColor
+    margin-top: 75px
+    z-index: 500
+    width: 100%
+    height: calc(100% - 75px)
+
+.container--modal_login .modal-content
+    padding: 0
+    position: absolute
+    top: 25%
+    left: 0
+    right: 0
+    width: 310px
+    text-align: center
+    margin: 0 auto
+
+.container--modal_login .login-form-text
+    text-align: left
+    padding: 10px 15px 10px 0
+    margin-left: 29px
+    width: 249px
+
+.container--modal_login input
+    color: $Black
+    background-color: $White
+    border-radius: 2px
+    margin: 6px 0
+
+.container--modal_login input:not(#checkbox)
+    width: 100%
+
+.container--modal_confirm input
+    color: $Black
+    background-color: $White
+    border-radius: 2px
+    margin: 6px 0
+
+.container--modal_login #login-error
+    color: $RedAccent
+    text-align: center
+    font-size: 22px
+
+.container--modal_login .container--header
+    height: 71px
+
+.container--modal_login .container--car_info
+    width: 100%
+
+.container--modal_login .container--car_info h1
+    padding-top: 10px
+
+.btn--modal_btn
+    margin: 4px auto
+    width: 80%
+    display: block
+
+.btn--modal_btn_diagnostics
+    margin: 8px auto
+    width: 25%
+    display: block
+    flex-basis: 29%
+
+.btn2--modal_btn_control
+    margin: 8px auto
+    width: 25%
+    display: block
+    flex-basis: 25%
+
+.modal-content .modal--close
+    text-align: right
+    margin: -9px 8px 0 0
+    font-size: 25px
+
+.modal-content-diagnostics .modal--close
+    text-align: right
+    margin: -9px 8px 0 0
+    font-size: 25px
+
+.modal--slider
+    margin: 30px auto
+    width: 80%
+
+.modal--slider .rangeslider
+    height: 9px
+
+.modal--slider .rangeslider-horizontal .rangeslider__fill
+    background-color: $GreenAccent
+
+.modal--slider .rangeslider-horizontal .rangeslider__handle::after
+    content: none
+
+.modal--slider .rangeslider-horizontal .rangeslider__handle
+    width: 20px
+    height: 20px
+    border-radius: 20px
+
+.modal--media_controls
+    margin: 15px 0
+
+.modal--media_controls .media-control_button
+    font-size: 35px
+    padding: 0 30px
+
+.modal--media_controls #media-volume_level
+    padding: 10px 0 15px 0
+
+.modal--media_controls .media_actions
+    display: flex
+    align-items: center
+    justify-content: center
+    margin: 30px 0 20px 0
+
+.modal--media_controls .media-play
+    background: #f8f9fa
+    border-radius: 50px
+    padding: 11px 5px
+    font-size: 21px
+
+.fa-playpause::before
+  content: "\f04b"
+  color: $BackgroundColor
+
+.fa-playpause::after
+  content: "\f04c"
+  color: $BackgroundColor
+
+.modal--level_text
+    padding: 5px 0 5px 0
+
+.climate--seat_warmers
+    font-size: 47px
+    padding: 20px 0 10px 0
+
+.climate--seat_btn_active i
+    color: $RedAccent
+
+//This shit is not working. Need to change inner color
+.climate--seat_btn_level_0 i
+    color: $White
+
+.climate--seat_btn_level_1 i
+    color: $Level1
+
+.climate--seat_btn_level_2 i
+    color: $Level2
+
+.climate--seat_btn_level_3 i
+    color: $RedAccent
+
+.climate--front_seats button
+    margin: 0 12px 10px 12px
+
+@media only screen and (min-width: 375px)
+    .modal-content
+        width: 355px
+
+    .btn--modal_btn
+        margin: 6px auto
+
+@media only screen and (min-width: 420px)
+    .container--logout_menu
+        top: 28px
+        right: 15px
+
+    .container--logout_menu i
+        font-size: 32px
+
+    .logout-button
+        top: 34px
+        right: -10px
+
+@media only screen and (min-width: 500px)
+    .btn--control_btn
+        flex-basis: 48%
+
+@media only screen and (min-width: 768px)
+    .container--main_section
+        padding-top: 71px
+
+    .container--car_image
+        height: calc(100vh - 71px)
+
+    .modal-content
+        width: 550px
+
+    .btn
+        padding: 15px 15px
+
+    .btn--modal_btn
+        margin: 8px auto
+
+    .container--car_image img
+        width: 530px
+
+    .modal pre[class*="language-"]
+        font-size: 1em
+
+    .container--car_info h1
+        font-size: 24px
+
+    .container--car_info p,
+    .container--car_info i
+        font-size: 16px
+
+    .container--logout_menu i
+        font-size: 32px
+
+#confirm--password
+    display: inline
+
+#enter--pin
+    display: inline
+
+#charge_state
+    font-weight: bold
