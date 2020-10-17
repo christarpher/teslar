@@ -62,6 +62,10 @@ body {
   background-color: #006d66;
 }
 
+.btn2:active {
+  background-color: #006d66;
+}
+
 .container--header {
   display: flex;
   align-items: center;
@@ -273,7 +277,7 @@ body {
   margin: 8px auto;
   width: 25%;
   display: block;
-  flex-basis: 25%;
+  flex-basis: 29%;
 }
 
 .modal-content .modal--close {
