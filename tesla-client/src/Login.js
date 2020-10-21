@@ -124,7 +124,7 @@ class LoginModal extends Component {
     store.dispatch({
       type: 'UPDATE_OBJECT',
       payload: {
-        refreshTime: 1
+        refreshTime: 3
       }
     });
     axios.post('/login', {
@@ -136,7 +136,8 @@ class LoginModal extends Component {
       store.dispatch({
         type: 'UPDATE_OBJECT',
         payload: {
-          loginFailed: false
+          loginFailed: false,
+          refreshTime: 3
         }
       });
       self.setState({ 
