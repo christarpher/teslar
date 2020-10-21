@@ -17,6 +17,7 @@ class ChargingModal extends Component{
     this.chargePortButton = this.chargePortButton.bind(this);
     this.chargingButton = this.chargingButton.bind(this);
     this.showError = this.showError.bind(this);
+    this.plugVehicle = this.plugVehicle.bind(this);
   }
 
   componentDidMount(){
@@ -28,13 +29,15 @@ class ChargingModal extends Component{
   //call this function inside every control
   refreshGlobalTimerWhenAction(){
     var newStore = store.getState();
-    newStore.state.refreshTime = this.props.globalTimerInterval;
-    store.dispatch({
-      type: 'UPDATE_OBJECT',
-      payload: {
-        refreshTime: newStore.state.refreshTime
-      }
-    })
+    if(newStore.state.localOptions.authToken !== "faketoken"){
+      newStore.state.refreshTime = this.props.globalTimerInterval;
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          refreshTime: newStore.state.refreshTime
+        }
+      })
+    }
   }
 
   showError(text){
@@ -84,35 +87,64 @@ class ChargingModal extends Component{
     this.refreshGlobalTimerWhenAction();
     var self = this;
     //make API call here to send the max charge setting
-    //see comment above handleChargeChange()
-    axios.post('/chargeLimit', {
-      auth: JSON.stringify(this.state.localOptions),
-      value: parseInt(this.state.maxCharge)
-    })
-    .then(function (response) {
-      //if it's a good response, state is already updated!
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not set max charge limit");
-      //error lets repull our data and ensure its back to normal
+    if(this.state.localOptions.authToken !== "faketoken"){
+      //see comment above handleChargeChange()
+      axios.post('/chargeLimit', {
+        auth: JSON.stringify(this.state.localOptions),
+        value: parseInt(this.state.maxCharge)
+      })
+      .then(function (response) {
+        //if it's a good response, state is already updated!
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not set max charge limit");
+        //error lets repull our data and ensure its back to normal
+        var newStore = store.getState();
+        newStore.state.refreshTime = 1;
+        store.dispatch({
+          type: 'UPDATE_OBJECT',
+          payload: {
+            refreshTime: newStore.state.refreshTime
+          }
+        })
+      });
+    }
+  }
+
+  plugVehicle(){
+    var self = this;
+    var newStore = store.getState();
+    newStore.state.testPluggedIn = !newStore.state.testPluggedIn;
+    if(newStore.state.testPluggedIn === false){
       var newStore = store.getState();
-      newStore.state.refreshTime = 1;
+      newStore.state.vehicleDataObject.charge_state.charging_state = 'Disconnected';
       store.dispatch({
         type: 'UPDATE_OBJECT',
         payload: {
-          refreshTime: newStore.state.refreshTime
+          vehicleDataObject: newStore.state.vehicleDataObject,
+          testPluggedIn: newStore.state.testPluggedIn
         }
       })
-    });
+    }
+    if(newStore.state.testPluggedIn === true){
+      var newStore = store.getState();
+      newStore.state.vehicleDataObject.charge_state.charging_state = 'Charging';
+      newStore.state.vehicleDataObject.charge_state.charge_port_latch = 'Engaged'
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          vehicleDataObject: newStore.state.vehicleDataObject,
+          testPluggedIn: newStore.state.testPluggedIn
+        }
+      })
+    }
   }
-
-
 
   chargePortButton(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
     //if the charge door is open then send close command
-    if(this.props.vehicleChargeDoor === true && this.props.vehicleCharging === 'Disconnected'){
+    if((this.props.vehicleChargeDoor === true && this.props.vehicleCharging === 'Disconnected') && this.state.localOptions.authToken !== "faketoken"){
       axios.post('/closeChargePort', {
         auth: JSON.stringify(this.state.localOptions)
       })
@@ -130,9 +162,18 @@ class ChargingModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not close the vehicle charge port");
       });
+    }else if((this.props.vehicleChargeDoor === true && this.props.vehicleCharging === 'Disconnected') && this.state.localOptions.authToken === "faketoken"){
+      var newStore = store.getState();
+        newStore.state.vehicleDataObject.charge_state.charge_port_door_open = false;
+        store.dispatch({
+          type: 'UPDATE_OBJECT',
+          payload: {
+            vehicleDataObject: newStore.state.vehicleDataObject
+          }
+        })
     }
     //if the charge port door is closed then send open command
-    if(this.props.vehicleChargeDoor === false || this.props.chargePortLatch === 'Engaged'){
+    if((this.props.vehicleChargeDoor === false || this.props.chargePortLatch === 'Engaged') && this.state.localOptions.authToken !== "faketoken"){
       axios.post('/openChargePort', {
         auth: JSON.stringify(this.state.localOptions)
       })
@@ -153,6 +194,18 @@ class ChargingModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not open the vehicle charge port");
       });
+    }else if((this.props.vehicleChargeDoor === false || this.props.chargePortLatch === 'Engaged') && this.state.localOptions.authToken === "faketoken"){
+      var newStore = store.getState();
+        newStore.state.vehicleDataObject.charge_state.charge_port_door_open = true;
+        if(self.props.chargePortLatch === 'Engaged'){
+          newStore.state.vehicleDataObject.charge_state.charge_port_latch = 'Disengaged';
+        }
+        store.dispatch({
+          type: 'UPDATE_OBJECT',
+          payload: {
+            vehicleDataObject: newStore.state.vehicleDataObject
+          }
+        })
     }
   }
 
@@ -161,7 +214,7 @@ class ChargingModal extends Component{
     this.refreshGlobalTimerWhenAction();
     var self = this;
     //if it's not charging
-    if(this.props.vehicleCharging === 'Stopped'){
+    if(this.props.vehicleCharging === 'Stopped' && this.state.localOptions.authToken !== "faketoken"){
         axios.post('/startCharge', {
             auth: JSON.stringify(this.state.localOptions)
         }).then(function(response) {
@@ -176,8 +229,17 @@ class ChargingModal extends Component{
         }).catch(function(error) {
           self.showError("Error: Could not start charging the vehicle");
         });
+    }else if(this.props.vehicleCharging === 'Stopped' && this.state.localOptions.authToken === "faketoken"){
+      var newStore = store.getState();
+      newStore.state.vehicleDataObject.charge_state.charging_state = 'Charging';
+      store.dispatch({
+          type: 'UPDATE_OBJECT',
+          payload: {
+              vehicleDataObject: newStore.state.vehicleDataObject
+          }
+      })
     }
-    if(this.props.vehicleCharging === 'Charging'){
+    if(this.props.vehicleCharging === 'Charging' && this.state.localOptions.authToken !== "faketoken"){
         axios.post('/stopCharge', {
             auth: JSON.stringify(this.state.localOptions)
         }).then(function(response) {
@@ -192,6 +254,15 @@ class ChargingModal extends Component{
         }).catch(function(error) {
           self.showError("Error: Could not stop charging the vehicle");
         });
+    }else if(this.props.vehicleCharging === 'Charging' && this.state.localOptions.authToken === "faketoken"){
+      var newStore = store.getState();
+      newStore.state.vehicleDataObject.charge_state.charging_state = 'Stopped';
+      store.dispatch({
+          type: 'UPDATE_OBJECT',
+          payload: {
+              vehicleDataObject: newStore.state.vehicleDataObject
+          }
+      })
     }
   }
 
@@ -218,6 +289,8 @@ class ChargingModal extends Component{
 
 				  <p id="charge_state">{this.props.vehicleCharging}</p>
 
+                  
+
                   { (this.props.vehicleCharging === 'Disconnected') ?
                       <button onClick={this.chargePortButton} id="charging--charge_port" className="btn btn--modal_btn">
                         {this.props.vehicleChargeDoor ? 'Close Charge Port' : 'Open Charge Port'}
@@ -235,6 +308,13 @@ class ChargingModal extends Component{
                   { (this.props.vehicleCharging === 'Charging') ?
                       <p>Time to full charge: {this.props.chargeTimeLeft}</p>
                   : null }
+                  
+                  { (this.props.chargePortLatch === 'Disengaged' && this.state.localOptions.authToken === "faketoken" && this.props.vehicleChargeDoor === true) ?
+                      <button onClick={this.plugVehicle} id="charging--charge_port" className="btn btn--modal_btn">
+                        {this.props.testPluggedIn ? 'Disconnect charger (Test Mode Only)' : 'Connect Charger (Test Mode Only)'}
+                      </button>
+                      : null
+                  }
 
                   { ((this.props.vehicleCharging === 'Charging' || this.props.vehicleCharging === 'Stopped') && this.props.chargePortLatch === 'Engaged') ?
                     <React.Fragment>
@@ -275,6 +355,7 @@ const mapStateToProps = (state) => {
       showCharge: state.state.showChargingModal,
       vehicleCharging: state.state.vehicleDataObject.charge_state.charging_state,
       chargePortLatch: state.state.vehicleDataObject.charge_state.charge_port_latch,
+      testPluggedIn: state.state.testPluggedIn,
 	  chargeTimeLeft: state.state.vehicleDataObject.charge_state.time_to_full_charge
     }
   }

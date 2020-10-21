@@ -535,7 +535,7 @@ app.post('/vehicleData', function (req, res) {
                     time_to_full_charge: 0,
                     timestamp: 1000000000000,
                     trip_charging: false,
-                    usable_battery_level: 72,
+                    usable_battery_level: 38,
                     user_charge_enable_request: null
                 },
                 gui_settings: {

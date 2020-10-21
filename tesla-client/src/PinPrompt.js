@@ -58,12 +58,43 @@ class PinPrompt extends Component {
 
 	activateSpeedLimit() {
 		var self = this;
-
-		if (this.props.speedLimitActive) {
-			axios.post('/deactivateSpeedLimit', {
-				auth: JSON.stringify(this.state.localOptions),
-				pin: parseInt(this.state.pin)
-			}).then(function(response) {
+		if(this.state.localOptions.authToken !== "faketoken"){
+			if (this.props.speedLimitActive) {
+				axios.post('/deactivateSpeedLimit', {
+					auth: JSON.stringify(this.state.localOptions),
+					pin: parseInt(this.state.pin)
+				}).then(function(response) {
+					var newStore = store.getState();
+					newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.active = false;
+					store.dispatch({
+						type: 'UPDATE_OBJECT',
+						payload: {
+							vehicleDataObject: newStore.state.vehicleDataObject
+						}
+					})
+				}).catch(function(err) {
+					self.showError("Error: Could not deactivate the speed limit");
+				});
+			}
+			else {
+				axios.post('/activateSpeedLimit', {
+					auth: JSON.stringify(this.state.localOptions),
+					pin: parseInt(this.state.pin)
+				}).then(function(response) {
+					var newStore = store.getState();
+					newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.active = true;
+					store.dispatch({
+						type: 'UPDATE_OBJECT',
+						payload: {
+							vehicleDataObject: newStore.state.vehicleDataObject
+						}
+					})
+				}).catch(function(err) {
+					self.showError("Error: Could not activate the speed limit");
+				});
+			}
+		}else{
+			if(this.props.speedLimitActive){
 				var newStore = store.getState();
 				newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.active = false;
 				store.dispatch({
@@ -72,15 +103,7 @@ class PinPrompt extends Component {
 						vehicleDataObject: newStore.state.vehicleDataObject
 					}
 				})
-			}).catch(function(err) {
-				self.showError("Error: Could not deactivate the speed limit");
-			});
-		}
-		else {
-			axios.post('/activateSpeedLimit', {
-				auth: JSON.stringify(this.state.localOptions),
-				pin: parseInt(this.state.pin)
-			}).then(function(response) {
+			}else{
 				var newStore = store.getState();
 				newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.active = true;
 				store.dispatch({
@@ -89,19 +112,29 @@ class PinPrompt extends Component {
 						vehicleDataObject: newStore.state.vehicleDataObject
 					}
 				})
-			}).catch(function(err) {
-				self.showError("Error: Could not activate the speed limit");
-			});
+			}
 		}
 	}
 
 	clearSpeedLimitPin() {
 		var self = this;
-
-		axios.post('/clearSpeedLimitPin', {
-			auth: JSON.stringify(this.state.localOptions),
-			pin: parseInt(this.state.pin)
-		}).then(function(response) {
+		if(this.state.localOptions.authToken !== "faketoken"){
+			axios.post('/clearSpeedLimitPin', {
+				auth: JSON.stringify(this.state.localOptions),
+				pin: parseInt(this.state.pin)
+			}).then(function(response) {
+				var newStore = store.getState();
+				newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.pin_code_set = false;
+				store.dispatch({
+					type: 'UPDATE_OBJECT',
+					payload: {
+						vehicleDataObject: newStore.state.vehicleDataObject
+					}
+				})
+			}).catch(function(err) {
+				self.showError("Error: Could not clear the speed limit pin");
+			});
+		}else{
 			var newStore = store.getState();
 			newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.pin_code_set = false;
 			store.dispatch({
@@ -110,35 +143,43 @@ class PinPrompt extends Component {
 					vehicleDataObject: newStore.state.vehicleDataObject
 				}
 			})
-		}).catch(function(err) {
-			self.showError("Error: Could not clear the speed limit pin");
-		});
+		}
 	}
 
 	activateValetMode() {
 		var self = this;
-		var onoff;
+		if(this.state.localOptions.authToken !== "faketoken"){
+			var onoff;
+			if (this.props.valetModeActive) onoff = false;
+			else onoff = true;
 
-		if (this.props.valetModeActive) onoff = false;
-		else onoff = true;
-
-		axios.post('/setValetMode', {
-			auth: JSON.stringify(this.state.localOptions),
-			pin: parseInt(this.state.pin),
-			onoff: onoff
-		}).then(function(response) {
+			axios.post('/setValetMode', {
+				auth: JSON.stringify(this.state.localOptions),
+				pin: parseInt(this.state.pin),
+				onoff: onoff
+			}).then(function(response) {
+				var newStore = store.getState();
+				newStore.state.vehicleDataObject.vehicle_state.valet_mode = onoff;
+				store.dispatch({
+					type: 'UPDATE_OBJECT',
+					payload: {
+						vehicleDataObject: newStore.state.vehicleDataObject
+					}
+				})
+			}).catch(function(err) {
+				if (onoff) self.showError("Error: could not activate Valet Mode.");
+				else self.showError("Error: could not deactivate Valet Mode.");
+			});
+		}else{
 			var newStore = store.getState();
-			newStore.state.vehicleDataObject.vehicle_state.valet_mode = onoff;
+			newStore.state.vehicleDataObject.vehicle_state.valet_mode = !newStore.state.vehicleDataObject.vehicle_state.valet_mode;
 			store.dispatch({
 				type: 'UPDATE_OBJECT',
 				payload: {
 					vehicleDataObject: newStore.state.vehicleDataObject
 				}
 			})
-		}).catch(function(err) {
-			if (onoff) self.showError("Error: could not activate Valet Mode.");
-			else self.showError("Error: could not deactivate Valet Mode.");
-		});
+		}
 	}
 
 	submit = () => {
@@ -170,13 +211,13 @@ class PinPrompt extends Component {
 							<p id="pin--text">
 
 								{ (!this.props.speedLimitPinSet && !this.props.pinValetActivate) ?
-									"Please set a PIN to activate the speed limit."
+									"Please set a PIN to change the speed limit."
 									: null }
 								{ (this.props.speedLimitPinSet && !this.props.pinValetActivate) ?
 									"Please enter your speed limit pin."
 									: null }
 								{ (this.props.valetPinNeeded && this.props.pinValetActivate) ?
-									"Please set a PIN to activate valet mode."
+									"Please set a PIN to change valet mode."
 									: null }
 								{ (!this.props.valetPinNeeded && this.props.pinValetActivate) ?
 									"Please enter your valet mode pin."

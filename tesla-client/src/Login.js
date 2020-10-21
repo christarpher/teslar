@@ -119,6 +119,40 @@ class LoginModal extends Component {
       });
   }
 
+  loginFunctionTest = () => {
+    var self = this;
+
+    axios.post('/login', {
+      email: "test",
+      password: "test"
+    })
+    .then(function (response) {
+      //set loginFailed as false so we don't display an error
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          loginFailed: false
+        }
+      });
+      self.setState({ authToken: response.data.authToken, refreshToken: response.data.refreshToken }, self.vehicleLoginFunction);
+    })
+    .catch(function (error) {
+      //set loginFailed as true so we can display an error
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          loginFailed: true
+        }
+      });
+      //reset values of our login inputs
+      self.setState({
+        email: '',
+        password: ''
+      });
+      console.log(error);
+    });
+}
+
   vehicleLoginCookie = () => {
     var self = this;
     const { cookies } = this.props;
@@ -240,6 +274,7 @@ class LoginModal extends Component {
                         <label htmlFor="Remember"> Remember Me</label>
                     </div>
                     <button type="submit" onClick={this.loginFunction} className="btn btn--modal_btn" id="login">Login</button>
+                    <button type="submit" onClick={this.loginFunctionTest} className="btn btn--modal_btn" id="login">Play around with the app</button>
 
                 </div>
             </div>

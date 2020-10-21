@@ -39,8 +39,15 @@ class Header extends Component{
           <div className="container--car_info">
               <h1>{this.props.vehicleDataName}</h1>
               {this.props.vehicleLoaded ? 
-                <p>{(this.props.vehicleCharging === 'Charging') ? <i className="fas fa-bolt"/> : null} Battery Level: {this.props.vehicleDataBatteryLevel}%</p>
-              : null }
+                <p> {(this.props.vehicleLocked) ?
+                      <i className="fas fa-lock"/> 
+                    : <i className="fas fa-lock-open"/> }
+                    {(this.props.vehicleCharging === 'Charging') ? 
+                      <i className="fas fa-bolt"/> 
+                    : null} 
+                    Battery Level: {this.props.vehicleDataBatteryLevel}%
+                </p>
+                : null }
               {this.props.vehicleLoaded ? 
                 <p>Estimated Range: {this.props.vehicleDataRangeLeft.toFixed(0)} Miles</p>
               : null }
@@ -59,6 +66,7 @@ class Header extends Component{
 const mapStateToProps = (state) => {
   return {
     vehicleDataName: state.state.vehicleDataObject.display_name,
+    vehicleLocked: state.state.vehicleDataObject.vehicle_state.locked,
     vehicleDataBatteryLevel: state.state.vehicleDataObject.charge_state.usable_battery_level,
     vehicleDataRangeLeft: state.state.vehicleDataObject.charge_state.est_battery_range,
     vehicleLoaded: state.state.initialVehicleLoaded,

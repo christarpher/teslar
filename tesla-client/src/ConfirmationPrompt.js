@@ -34,13 +34,15 @@ class ConfirmationPrompt extends Component{
 
   refreshGlobalTimerWhenAction(){
     var newStore = store.getState();
-    newStore.state.refreshTime = this.props.globalTimerInterval;
-    store.dispatch({
-      type: 'UPDATE_OBJECT',
-      payload: {
-        refreshTime: newStore.state.refreshTime
-      }
-    })
+    if(newStore.state.localOptions.authToken !== "faketoken"){
+      newStore.state.refreshTime = this.props.globalTimerInterval;
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          refreshTime: newStore.state.refreshTime
+        }
+      })
+    }
   }
 
   //calling this when we press the X at the top
@@ -82,7 +84,7 @@ class ConfirmationPrompt extends Component{
     this.refreshGlobalTimerWhenAction();
     var self = this;
     //handle opening the frunk
-    if(this.props.frunk === true){
+    if(this.props.frunk === true && this.state.localOptions.authToken !== "faketoken"){
         axios.post('/openTrunk', {
             auth: JSON.stringify(this.state.localOptions),
             which: "frunk"
@@ -94,10 +96,12 @@ class ConfirmationPrompt extends Component{
         .catch(function (error) {
           self.showError("Error: Could not open the Frunk");
         });
+    }else if(this.props.frunk === true && this.state.localOptions.authToken === "faketoken"){
+      //self.showError("Frunk has been opened!");
     }
 
     //handle opening the trunk
-    if(this.props.trunk === true){
+    if(this.props.trunk === true && this.state.localOptions.authToken !== "faketoken"){
         axios.post('/openTrunk', {
             auth: JSON.stringify(this.state.localOptions),
             which: "trunk"
@@ -109,17 +113,18 @@ class ConfirmationPrompt extends Component{
         .catch(function (error) {
           self.showError("Error: Could not open the Trunk");
         });
+    }else if(this.props.trunk === true && this.state.localOptions.authToken === "faketoken"){
+      //self.showError("Trunk has been opened!");
     }
-
+    var newStore = store.getState();
     //handle locking or unlocking the car
     if(this.props.lock === true){
-        if(this.props.vehicleLocked === true){
+        if(this.props.vehicleLocked === true && this.state.localOptions.authToken !== "faketoken"){
             axios.post('/unlock', {
                 auth: JSON.stringify(this.state.localOptions)
             })
             .then(function (response) {
                 //if it's a good response, update local state
-                var newStore = store.getState();
                 newStore.state.vehicleDataObject.vehicle_state.locked = !newStore.state.vehicleDataObject.vehicle_state.locked;
                 store.dispatch({
                     type: 'UPDATE_OBJECT',
@@ -131,14 +136,21 @@ class ConfirmationPrompt extends Component{
             .catch(function (error) {
               self.showError("Error: Could not unlock the vehicle");
             });
+        }else if(this.props.vehicleLocked === true && this.state.localOptions.authToken === "faketoken"){
+          newStore.state.vehicleDataObject.vehicle_state.locked = !newStore.state.vehicleDataObject.vehicle_state.locked;
+            store.dispatch({
+              type: 'UPDATE_OBJECT',
+              payload: {
+              vehicleDataObject: newStore.state.vehicleDataObject
+              }
+          })
         }
-        if(this.props.vehicleLocked === false){
+        if(this.props.vehicleLocked === false && this.state.localOptions.authToken !== "faketoken"){
             axios.post('/lock', {
                 auth: JSON.stringify(this.state.localOptions)
             })
             .then(function (response) {
                 //if it's a good response, update local state
-                var newStore = store.getState();
                 newStore.state.vehicleDataObject.vehicle_state.locked = !newStore.state.vehicleDataObject.vehicle_state.locked;
                 store.dispatch({
                     type: 'UPDATE_OBJECT',
@@ -150,6 +162,14 @@ class ConfirmationPrompt extends Component{
             .catch(function (error) {
               self.showError("Error: Could not lock the vehicle");
             });
+        }else if(this.props.vehicleLocked === false && this.state.localOptions.authToken === "faketoken"){
+          newStore.state.vehicleDataObject.vehicle_state.locked = !newStore.state.vehicleDataObject.vehicle_state.locked;
+            store.dispatch({
+              type: 'UPDATE_OBJECT',
+              payload: {
+              vehicleDataObject: newStore.state.vehicleDataObject
+              }
+          })
         }
     }
 

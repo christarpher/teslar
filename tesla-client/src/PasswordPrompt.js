@@ -54,16 +54,20 @@ class PasswordCheck extends Component{
 
   startVehicle = () => {
     var self = this;
-    axios.post('/startEngine', {
-        auth: JSON.stringify(this.state.localOptions),
-        pass: this.state.password
-    })
-    .then(function (response) {
-      self.showError("You have two minutes to start driving the vehicle");
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not start vehicle");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/startEngine', {
+          auth: JSON.stringify(this.state.localOptions),
+          pass: this.state.password
+      })
+      .then(function (response) {
+        self.showError("You have two minutes to start driving the vehicle");
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not start vehicle");
+      });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Test vehicle started");
+    }
     this.hidePasswordModal();
   }
 

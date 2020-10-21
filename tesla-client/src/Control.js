@@ -38,13 +38,15 @@ class ControlModal extends Component{
   //call this function inside every control
   refreshGlobalTimerWhenAction(){
     var newStore = store.getState();
-    newStore.state.refreshTime = this.props.globalTimerInterval;
-    store.dispatch({
-      type: 'UPDATE_OBJECT',
-      payload: {
-        refreshTime: newStore.state.refreshTime
-      }
-    })
+    if(newStore.state.localOptions.authToken !== "faketoken"){
+      newStore.state.refreshTime = this.props.globalTimerInterval;
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          refreshTime: newStore.state.refreshTime
+        }
+      })
+    }
   }
 
   showError(text){
@@ -94,15 +96,19 @@ class ControlModal extends Component{
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/honk', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we don't need anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not honk the vehicle horn");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/honk', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we don't need anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not honk the vehicle horn");
+      });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      //self.showError("Horn Honked!");
+    }
   }
 
   flashLightsButton(){
@@ -110,15 +116,19 @@ class ControlModal extends Component{
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/flashLights', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we dont need anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not flash the vehicle lights");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/flashLights', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we dont need anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not flash the vehicle lights");
+      });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      //self.showError("Lights Flashed!");
+    }
   }
 
   openFrunkButton(){
@@ -157,6 +167,7 @@ class ControlModal extends Component{
     //so the timer doesnt refresh directly after an async api call
     this.refreshGlobalTimerWhenAction();
     var self = this;
+    if(this.state.localOptions.authToken !== "faketoken"){
       //if the sunroof is open at all then we send a close command
       if(this.props.sunroofPercent > 0){
         axios.post('/closeSunroof', {
@@ -192,6 +203,16 @@ class ControlModal extends Component{
           self.showError("Error: Could not open the Sunroof");
         });
       }
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      var newStore = store.getState();
+      newStore.state.sunroofOpen = !newStore.state.sunroofOpen;
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          sunroofOpen: newStore.state.sunroofOpen
+        }
+      })
+    }
   }
 
   summonBackwards(){

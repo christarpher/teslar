@@ -27,13 +27,15 @@ class MediaModal extends Component{
   //call this function inside every control
   refreshGlobalTimerWhenAction(){
     var newStore = store.getState();
-    newStore.state.refreshTime = this.props.globalTimerInterval;
-    store.dispatch({
-      type: 'UPDATE_OBJECT',
-      payload: {
-        refreshTime: newStore.state.refreshTime
-      }
-    })
+    if(newStore.state.localOptions.authToken !== "faketoken"){
+      newStore.state.refreshTime = this.props.globalTimerInterval;
+      store.dispatch({
+        type: 'UPDATE_OBJECT',
+        payload: {
+          refreshTime: newStore.state.refreshTime
+        }
+      })
+    }
   }
 
   showError(text){
@@ -62,75 +64,85 @@ class MediaModal extends Component{
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/volumeUp', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we don't need to do anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not toggle volume up");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/volumeUp', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we don't need to do anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not toggle volume up");
+      });
+    }
   }
 
   volumeDown(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/volumeDown', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we don't need to do anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not toggle volume down");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/volumeDown', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we don't need to do anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not toggle volume down");
+      });
+    }
   }
 
   trackForward(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/nextSong', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we don't need to do anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not toggle track forward");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/nextSong', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we don't need to do anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not toggle track forward");
+      });
+    }
   }
 
   trackBackward(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/prevSong', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we don't need to do anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not toggle track backwards");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/prevSong', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we don't need to do anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not toggle track backwards");
+      });
+    }
   }
 
   trackPlayPause(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
     /* api call here */
-    axios.post('/toggleMusic', {
-      auth: JSON.stringify(this.state.localOptions)
-    })
-    .then(function (response) {
-      //if it's a good response, we don't need to do anything
-    })
-    .catch(function (error) {
-      self.showError("Error: Could not play/pause the track");
-    });
+    if(this.state.localOptions.authToken !== "faketoken"){
+      axios.post('/toggleMusic', {
+        auth: JSON.stringify(this.state.localOptions)
+      })
+      .then(function (response) {
+        //if it's a good response, we don't need to do anything
+      })
+      .catch(function (error) {
+        self.showError("Error: Could not play/pause the track");
+      });
+    }
   }
 
   render(){

@@ -31,13 +31,15 @@ class SafetyModal extends Component {
 	//call this function inside every control
 	refreshGlobalTimerWhenAction(){
 		var newStore = store.getState();
-		newStore.state.refreshTime = this.props.globalTimerInterval;
-		store.dispatch({
-			type: 'UPDATE_OBJECT',
-			payload: {
-				refreshTime: newStore.state.refreshTime
-			}
-		})
+		if(newStore.state.localOptions.authToken !== "faketoken"){
+			newStore.state.refreshTime = this.props.globalTimerInterval;
+			store.dispatch({
+				type: 'UPDATE_OBJECT',
+				payload: {
+					refreshTime: newStore.state.refreshTime
+				}
+			})
+		}
 	}
 
 	showError(text){
@@ -87,23 +89,25 @@ class SafetyModal extends Component {
 		var self = this;
 		//make API call here to send the speed limit setting
 		//see comment above setSpeedLimitFront()
-		axios.post('/setSpeedLimit', {
-			auth: JSON.stringify(this.state.localOptions),
-			limit: parseInt(this.state.speedLimit)
-		}).then(function (response) {
-				//if it's a good response, state is already updated!
-		}).catch(function (error) {
-			self.showError("Error: Could not set speed limit");
-			//error lets repull our data and ensure its back to normal
-			var newStore = store.getState();
-			newStore.state.refreshTime = 1;
-			store.dispatch({
-				type: 'UPDATE_OBJECT',
-				payload: {
-					refreshTime: newStore.state.refreshTime
-				}
-			})
-		});
+		if(this.state.localOptions.authToken !== "faketoken"){
+			axios.post('/setSpeedLimit', {
+				auth: JSON.stringify(this.state.localOptions),
+				limit: parseInt(this.state.speedLimit)
+			}).then(function (response) {
+					//if it's a good response, state is already updated!
+			}).catch(function (error) {
+				self.showError("Error: Could not set speed limit");
+				//error lets repull our data and ensure its back to normal
+				var newStore = store.getState();
+				newStore.state.refreshTime = 1;
+				store.dispatch({
+					type: 'UPDATE_OBJECT',
+					payload: {
+						refreshTime: newStore.state.refreshTime
+					}
+				})
+			});
+		}
 	}
 
 	speedLimitButton() {
@@ -140,77 +144,28 @@ class SafetyModal extends Component {
 
 		this.refreshGlobalTimerWhenAction();
 		var self = this;
-		var onoff;
 
-		if (this.props.sentryModeActive) onoff = false;
-		else onoff = true;
+		if(this.state.localOptions.authToken !== "faketoken"){
+			var onoff;
+			if (this.props.sentryModeActive) onoff = false;
+			else onoff = true;
 
-		axios.post('/setSentryMode', {
-			auth: JSON.stringify(this.state.localOptions),
-			onoff: onoff
-		}).then(function (response) {
-			var newStore = store.getState();
-			newStore.state.vehicleDataObject.vehicle_state.sentry_mode = onoff;
-			store.dispatch({
-				type: 'UPDATE_OBJECT',
-				payload: {
-						vehicleDataObject: newStore.state.vehicleDataObject
-				}
-			})
-		}).catch(function (error) {
-			if (onoff) self.showError("Error: Could not activate sentry mode");
-			else self.showError("Error: Could not deactivate sentry mode");
-			//error lets repull our data and ensure its back to normal
-			var newStore = store.getState();
-			newStore.state.refreshTime = 1;
-			store.dispatch({
-				type: 'UPDATE_OBJECT',
-				payload: {
-					refreshTime: newStore.state.refreshTime
-				}
-			})
-		});
-
-	}
-
-	valetModeButton() {
-		//so the timer doesnt refresh directly after an async api call
-		this.refreshGlobalTimerWhenAction();
-
-		var self = this;
-		var onoff;
-
-		if (this.props.valetModeActive) onoff = false;
-		else onoff = true;
-
-		if (!onoff || this.props.valetPinNeeded) {
-			/* call the pin prompt modal */
-			store.dispatch({
-				type: 'UPDATE_OBJECT',
-				payload: {
-					showPinPrompt: true,
-					showSafetyModal: false,
-					pinValetActivate: true
-				}
-			})
-			//the api call itself is made in the pinPrompt.js file
-		}
-		else {
-			axios.post('/setValetMode', {
+		
+			axios.post('/setSentryMode', {
 				auth: JSON.stringify(this.state.localOptions),
-				onoff: onoff,
-				pin: ""
+				onoff: onoff
 			}).then(function (response) {
 				var newStore = store.getState();
-				newStore.state.vehicleDataObject.vehicle_state.valet_mode = true;
+				newStore.state.vehicleDataObject.vehicle_state.sentry_mode = onoff;
 				store.dispatch({
 					type: 'UPDATE_OBJECT',
 					payload: {
-						vehicleDataObject: newStore.state.vehicleDataObject
+							vehicleDataObject: newStore.state.vehicleDataObject
 					}
 				})
 			}).catch(function (error) {
-				self.showError("Error: Could not activate sentry mode");
+				if (onoff) self.showError("Error: Could not activate sentry mode");
+				else self.showError("Error: Could not deactivate sentry mode");
 				//error lets repull our data and ensure its back to normal
 				var newStore = store.getState();
 				newStore.state.refreshTime = 1;
@@ -221,6 +176,78 @@ class SafetyModal extends Component {
 					}
 				})
 			});
+		}else{
+			var newStore = store.getState();
+				newStore.state.vehicleDataObject.vehicle_state.sentry_mode = !newStore.state.vehicleDataObject.vehicle_state.sentry_mode;
+				store.dispatch({
+					type: 'UPDATE_OBJECT',
+					payload: {
+							vehicleDataObject: newStore.state.vehicleDataObject
+					}
+				})
+		}
+
+	}
+
+	valetModeButton() {
+		//so the timer doesnt refresh directly after an async api call
+		this.refreshGlobalTimerWhenAction();
+
+		if(this.state.localOptions.authToken !== "faketoken"){
+			var self = this;
+			var onoff;
+			if (this.props.valetModeActive) onoff = false;
+			else onoff = true;
+
+			if (!onoff || this.props.valetPinNeeded) {
+				/* call the pin prompt modal */
+				store.dispatch({
+					type: 'UPDATE_OBJECT',
+					payload: {
+						showPinPrompt: true,
+						showSafetyModal: false,
+						pinValetActivate: true
+					}
+				})
+				//the api call itself is made in the pinPrompt.js file
+			}
+			else {
+				axios.post('/setValetMode', {
+					auth: JSON.stringify(this.state.localOptions),
+					onoff: onoff,
+					pin: ""
+				}).then(function (response) {
+					var newStore = store.getState();
+					newStore.state.vehicleDataObject.vehicle_state.valet_mode = true;
+					store.dispatch({
+						type: 'UPDATE_OBJECT',
+						payload: {
+							vehicleDataObject: newStore.state.vehicleDataObject
+						}
+					})
+				}).catch(function (error) {
+					self.showError("Error: Could not activate sentry mode");
+					//error lets repull our data and ensure its back to normal
+					var newStore = store.getState();
+					newStore.state.refreshTime = 1;
+					store.dispatch({
+						type: 'UPDATE_OBJECT',
+						payload: {
+							refreshTime: newStore.state.refreshTime
+						}
+					})
+				});
+			}
+		}else{
+			var newStore = store.getState();
+			store.dispatch({
+				type: 'UPDATE_OBJECT',
+				payload: {
+					showPinPrompt: true,
+					showSafetyModal: false,
+					pinValetActivate: true
+				}
+			})
 		}
 	}
 

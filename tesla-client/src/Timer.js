@@ -186,6 +186,7 @@ class Timer extends Component {
 
   countDown() {
     // Remove one second, set state so a re-render happens.
+    
     var seconds = parseInt(this.props.globalTimer-1);
     var newStore = store.getState();
     newStore.state.refreshTime = seconds;
@@ -198,9 +199,11 @@ class Timer extends Component {
       }
     })
     // Check if we're at zero.
-    if (seconds <= 0) { 
+    if (seconds === 0) { 
       this.refreshVehicleData();
-      newStore.state.refreshTime = this.props.globalTimerInterval;
+      if(newStore.state.localOptions.authToken !== "faketoken"){
+        newStore.state.refreshTime = this.props.globalTimerInterval;
+      }
       store.dispatch({
         type: 'UPDATE_OBJECT',
         payload: {

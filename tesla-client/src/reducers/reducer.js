@@ -37,6 +37,8 @@ const defaultState = {
     toggleVehicleConfig: false,
     toggleGUISettings: false,
     toggleAppState: false,
+    testPluggedIn: true,
+    valetPin: null,
     controlIconFontSize: '28px',
     localOptions: {
         authToken: '',

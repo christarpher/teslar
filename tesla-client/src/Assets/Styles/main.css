@@ -28,8 +28,27 @@ body {
   color: #F8F9FA;
 }
 
+.fas.fa-backward:active {
+  color: #A9A9A9;
+}
+
+.fas.fa-forward:active {
+  color: #A9A9A9;
+}
+
 .fas.fa-bolt {
   color: #77CEC9;
+  padding-right: 7px;
+}
+
+.fas.fa-lock {
+  padding-right: 7px;
+  padding-left: 7px;
+}
+
+.fas.fa-lock-open {
+  padding-right: 7px;
+  padding-left: 7px;
 }
 
 .btn {
@@ -346,10 +365,16 @@ body {
   content: "";
   color: #33333C;
 }
+.fa-playpause::before:active {
+  color: #A9A9A9;
+}
 
 .fa-playpause::after {
   content: "";
   color: #33333C;
+}
+.fa-playpause::after:active {
+  color: #A9A9A9;
 }
 
 .modal--level_text {

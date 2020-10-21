@@ -8,6 +8,7 @@ $RedAccent: #DA3738
 $DarkRedAccent: #391111
 $DarkGreenAccent: #006d66
 $GreenAccent: #77CEC9
+$GreyAccent: #A9A9A9
 $LightGreenAccent: #D1F2F0
 $White: #FFFFFF
 $Black: #000000
@@ -40,8 +41,23 @@ body
 .fas
     color: $FontColor
 
+.fas.fa-backward:active
+    color: $GreyAccent
+
+.fas.fa-forward:active
+    color: $GreyAccent
+
 .fas.fa-bolt
     color: $GreenAccent
+    padding-right: 7px
+
+.fas.fa-lock
+    padding-right: 7px
+    padding-left: 7px
+
+.fas.fa-lock-open
+    padding-right: 7px
+    padding-left: 7px
 
 .btn
     margin: 5px
@@ -306,12 +322,18 @@ body
     font-size: 21px
 
 .fa-playpause::before
-  content: "\f04b"
-  color: $BackgroundColor
+    content: "\f04b"
+    color: $BackgroundColor
+    &:active 
+        color: $GreyAccent
+
 
 .fa-playpause::after
-  content: "\f04c"
-  color: $BackgroundColor
+    content: "\f04c"
+    color: $BackgroundColor
+    &:active 
+        color: $GreyAccent
+
 
 .modal--level_text
     padding: 5px 0 5px 0

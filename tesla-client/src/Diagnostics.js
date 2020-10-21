@@ -19,7 +19,6 @@ class Diagnostics extends Component{
     this.toggleDriveState = this.toggleDriveState.bind(this);
     this.toggleVehicleConfig = this.toggleVehicleConfig.bind(this);
     this.toggleGUISettings = this.toggleGUISettings.bind(this);
-    //put this in the render function to access the entire application state for debugging
     //<button className="btn btn--modal_btn_diagnostics" onClick={this.toggleAppState}>Entire App State (TEST)</button>
   }
   
@@ -171,7 +170,6 @@ render(){
                     <button className="btn btn--modal_btn_diagnostics" onClick={this.toggleClimateState}>Climate States</button>
                     <button className="btn btn--modal_btn_diagnostics" onClick={this.toggleVehicleConfig}>Vehicle Config</button>
                     <button className="btn btn--modal_btn_diagnostics" onClick={this.toggleGUISettings}>GUI Settings</button>
-
                 </div>
                 
                 {this.props.toggleVehicleState ? <pre className="language-json" dangerouslySetInnerHTML={{__html: "Vehicle State: " + Prism.highlight(JSON.stringify(this.props.vehicleData.vehicle_state, null, 4), Prism.languages.json)}}></pre>: null}
