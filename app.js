@@ -682,7 +682,7 @@ app.post('/login', function (req, res) {
 			res.send(authToken);
 		}
   });*/
-    if(email === 'test' || email === '')
+    if(email === 'test')
     {
         console.log("Entering test mode");
         res.send({

@@ -58,6 +58,7 @@ class PinPrompt extends Component {
 
 	activateSpeedLimit() {
 		var self = this;
+		var newStore = store.getState();
 		if(this.state.localOptions.authToken !== "faketoken"){
 			if (this.props.speedLimitActive) {
 				axios.post('/deactivateSpeedLimit', {
@@ -95,7 +96,6 @@ class PinPrompt extends Component {
 			}
 		}else{
 			if(this.props.speedLimitActive){
-				var newStore = store.getState();
 				newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.active = false;
 				store.dispatch({
 					type: 'UPDATE_OBJECT',
@@ -104,7 +104,6 @@ class PinPrompt extends Component {
 					}
 				})
 			}else{
-				var newStore = store.getState();
 				newStore.state.vehicleDataObject.vehicle_state.speed_limit_mode.active = true;
 				store.dispatch({
 					type: 'UPDATE_OBJECT',

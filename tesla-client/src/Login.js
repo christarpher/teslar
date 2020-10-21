@@ -273,9 +273,21 @@ class LoginModal extends Component {
                           onChange={this.handleRemember}/>
                         <label htmlFor="Remember"> Remember Me</label>
                     </div>
-                    <button type="submit" onClick={this.loginFunction} className="btn btn--modal_btn" id="login">Login</button>
-                    <button type="submit" onClick={this.loginFunctionTest} className="btn btn--modal_btn" id="login">Play around with the app</button>
 
+                    <button 
+                      disabled={!this.state.email || !this.state.password}
+                      type="submit" 
+                      onClick={this.loginFunction} 
+                      className="btn btn--modal_btn" 
+                      id="login">Login
+                    </button>
+
+                    <button 
+                      type="submit" 
+                      onClick={this.loginFunctionTest} 
+                      className="btn btn--modal_btn" 
+                      id="login">Play around with the app
+                    </button>
                 </div>
             </div>
             </Modal>

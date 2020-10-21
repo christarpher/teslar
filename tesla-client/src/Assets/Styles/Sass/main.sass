@@ -9,7 +9,8 @@ $DarkRedAccent: #391111
 $DarkGreenAccent: #006d66
 $GreenAccent: #77CEC9
 $GreyAccent: #A9A9A9
-$LightGreenAccent: #D1F2F0
+$SilverAccent: #C0C0C0
+$LightGreenAccent: #20bdb5
 $White: #FFFFFF
 $Black: #000000
 $Level1: #da9e37
@@ -47,6 +48,18 @@ body
 .fas.fa-forward:active
     color: $GreyAccent
 
+.fas.fa-times:hover
+    color: $SilverAccent
+
+.fas.fa-times:active
+    color: $GreyAccent
+
+.fas.fa-sign-out-alt:hover
+    color: $SilverAccent
+
+.fas.fa-sign-out-alt:active
+    color: $GreyAccent
+
 .fas.fa-bolt
     color: $GreenAccent
     padding-right: 7px
@@ -82,8 +95,19 @@ body
 .btn--control_btn
     flex-basis: 75%
 
+.btn:hover
+    background-color: $LightGreenAccent
+
 .btn:active
     background-color: $DarkGreenAccent
+
+.btn:disabled
+    background-color: $GreyAccent
+    cursor: not-allowed
+    opacity: 65%
+
+.btn2:hover
+    background-color: $LightGreenAccent
 
 .btn2:active
     background-color: $DarkGreenAccent
@@ -295,6 +319,11 @@ body
     content: none
 
 .modal--slider .rangeslider-horizontal .rangeslider__handle
+    width: 15px
+    height: 15px
+    border-radius: 15px
+
+.modal--slider .rangeslider-horizontal .rangeslider__handle:hover
     width: 20px
     height: 20px
     border-radius: 20px

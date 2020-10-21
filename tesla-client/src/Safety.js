@@ -192,7 +192,7 @@ class SafetyModal extends Component {
 	valetModeButton() {
 		//so the timer doesnt refresh directly after an async api call
 		this.refreshGlobalTimerWhenAction();
-
+		var newStore = store.getState();
 		if(this.state.localOptions.authToken !== "faketoken"){
 			var self = this;
 			var onoff;
@@ -217,7 +217,6 @@ class SafetyModal extends Component {
 					onoff: onoff,
 					pin: ""
 				}).then(function (response) {
-					var newStore = store.getState();
 					newStore.state.vehicleDataObject.vehicle_state.valet_mode = true;
 					store.dispatch({
 						type: 'UPDATE_OBJECT',
@@ -228,7 +227,6 @@ class SafetyModal extends Component {
 				}).catch(function (error) {
 					self.showError("Error: Could not activate sentry mode");
 					//error lets repull our data and ensure its back to normal
-					var newStore = store.getState();
 					newStore.state.refreshTime = 1;
 					store.dispatch({
 						type: 'UPDATE_OBJECT',
@@ -239,7 +237,6 @@ class SafetyModal extends Component {
 				});
 			}
 		}else{
-			var newStore = store.getState();
 			store.dispatch({
 				type: 'UPDATE_OBJECT',
 				payload: {

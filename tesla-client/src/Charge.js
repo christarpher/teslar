@@ -112,11 +112,9 @@ class ChargingModal extends Component{
   }
 
   plugVehicle(){
-    var self = this;
     var newStore = store.getState();
     newStore.state.testPluggedIn = !newStore.state.testPluggedIn;
     if(newStore.state.testPluggedIn === false){
-      var newStore = store.getState();
       newStore.state.vehicleDataObject.charge_state.charging_state = 'Disconnected';
       store.dispatch({
         type: 'UPDATE_OBJECT',
@@ -127,7 +125,6 @@ class ChargingModal extends Component{
       })
     }
     if(newStore.state.testPluggedIn === true){
-      var newStore = store.getState();
       newStore.state.vehicleDataObject.charge_state.charging_state = 'Charging';
       newStore.state.vehicleDataObject.charge_state.charge_port_latch = 'Engaged'
       store.dispatch({
@@ -143,6 +140,7 @@ class ChargingModal extends Component{
   chargePortButton(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
+    var newStore = store.getState();
     //if the charge door is open then send close command
     if((this.props.vehicleChargeDoor === true && this.props.vehicleCharging === 'Disconnected') && this.state.localOptions.authToken !== "faketoken"){
       axios.post('/closeChargePort', {
@@ -150,7 +148,6 @@ class ChargingModal extends Component{
       })
       .then(function (response) {
         //if it's a good response, update local state
-        var newStore = store.getState();
         newStore.state.vehicleDataObject.charge_state.charge_port_door_open = false;
         store.dispatch({
           type: 'UPDATE_OBJECT',
@@ -163,7 +160,6 @@ class ChargingModal extends Component{
         self.showError("Error: Could not close the vehicle charge port");
       });
     }else if((this.props.vehicleChargeDoor === true && this.props.vehicleCharging === 'Disconnected') && this.state.localOptions.authToken === "faketoken"){
-      var newStore = store.getState();
         newStore.state.vehicleDataObject.charge_state.charge_port_door_open = false;
         store.dispatch({
           type: 'UPDATE_OBJECT',
@@ -179,7 +175,6 @@ class ChargingModal extends Component{
       })
       .then(function (response) {
         //if it's a good response, update local state
-        var newStore = store.getState();
         newStore.state.vehicleDataObject.charge_state.charge_port_door_open = true;
         if(self.props.chargePortLatch === 'Engaged'){
           newStore.state.vehicleDataObject.charge_state.charge_port_latch = 'Disengaged';
@@ -195,7 +190,6 @@ class ChargingModal extends Component{
         self.showError("Error: Could not open the vehicle charge port");
       });
     }else if((this.props.vehicleChargeDoor === false || this.props.chargePortLatch === 'Engaged') && this.state.localOptions.authToken === "faketoken"){
-      var newStore = store.getState();
         newStore.state.vehicleDataObject.charge_state.charge_port_door_open = true;
         if(self.props.chargePortLatch === 'Engaged'){
           newStore.state.vehicleDataObject.charge_state.charge_port_latch = 'Disengaged';
@@ -213,12 +207,12 @@ class ChargingModal extends Component{
   chargingButton(){
     this.refreshGlobalTimerWhenAction();
     var self = this;
+    var newStore = store.getState();
     //if it's not charging
     if(this.props.vehicleCharging === 'Stopped' && this.state.localOptions.authToken !== "faketoken"){
         axios.post('/startCharge', {
             auth: JSON.stringify(this.state.localOptions)
         }).then(function(response) {
-            var newStore = store.getState();
             newStore.state.vehicleDataObject.charge_state.charging_state = 'Charging';
             store.dispatch({
                 type: 'UPDATE_OBJECT',
@@ -230,7 +224,6 @@ class ChargingModal extends Component{
           self.showError("Error: Could not start charging the vehicle");
         });
     }else if(this.props.vehicleCharging === 'Stopped' && this.state.localOptions.authToken === "faketoken"){
-      var newStore = store.getState();
       newStore.state.vehicleDataObject.charge_state.charging_state = 'Charging';
       store.dispatch({
           type: 'UPDATE_OBJECT',
@@ -243,7 +236,6 @@ class ChargingModal extends Component{
         axios.post('/stopCharge', {
             auth: JSON.stringify(this.state.localOptions)
         }).then(function(response) {
-            var newStore = store.getState();
             newStore.state.vehicleDataObject.charge_state.charging_state = 'Stopped';
             store.dispatch({
                 type: 'UPDATE_OBJECT',
@@ -255,7 +247,6 @@ class ChargingModal extends Component{
           self.showError("Error: Could not stop charging the vehicle");
         });
     }else if(this.props.vehicleCharging === 'Charging' && this.state.localOptions.authToken === "faketoken"){
-      var newStore = store.getState();
       newStore.state.vehicleDataObject.charge_state.charging_state = 'Stopped';
       store.dispatch({
           type: 'UPDATE_OBJECT',
