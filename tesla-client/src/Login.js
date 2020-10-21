@@ -121,7 +121,12 @@ class LoginModal extends Component {
 
   loginFunctionTest = () => {
     var self = this;
-
+    store.dispatch({
+      type: 'UPDATE_OBJECT',
+      payload: {
+        refreshTime: 1
+      }
+    });
     axios.post('/login', {
       email: "test",
       password: "test"
@@ -134,7 +139,10 @@ class LoginModal extends Component {
           loginFailed: false
         }
       });
-      self.setState({ authToken: response.data.authToken, refreshToken: response.data.refreshToken }, self.vehicleLoginFunction);
+      self.setState({ 
+        authToken: response.data.authToken, 
+        refreshToken: response.data.refreshToken
+      }, self.vehicleLoginFunction);
     })
     .catch(function (error) {
       //set loginFailed as true so we can display an error
@@ -308,6 +316,7 @@ const mapStateToProps = (state) => {
     vehicleDataObject: state.state.vehicleDataObject,
     localOptionsProp: state.state.localOptions,
     showLoginProp: state.state.showLogin,
+    refreshTimeProp: state.state.refreshTime,
     rememberMeChecked: state.state.rememberMeChecked,
     loginFailed: state.state.loginFailed
   }

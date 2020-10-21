@@ -170,6 +170,7 @@ render(){
                     <button className="btn btn--modal_btn_diagnostics" onClick={this.toggleClimateState}>Climate States</button>
                     <button className="btn btn--modal_btn_diagnostics" onClick={this.toggleVehicleConfig}>Vehicle Config</button>
                     <button className="btn btn--modal_btn_diagnostics" onClick={this.toggleGUISettings}>GUI Settings</button>
+                    
                 </div>
                 
                 {this.props.toggleVehicleState ? <pre className="language-json" dangerouslySetInnerHTML={{__html: "Vehicle State: " + Prism.highlight(JSON.stringify(this.props.vehicleData.vehicle_state, null, 4), Prism.languages.json)}}></pre>: null}

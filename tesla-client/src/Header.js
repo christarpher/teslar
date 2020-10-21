@@ -71,7 +71,8 @@ const mapStateToProps = (state) => {
     vehicleDataRangeLeft: state.state.vehicleDataObject.charge_state.est_battery_range,
     vehicleLoaded: state.state.initialVehicleLoaded,
     vehicleCharging: state.state.vehicleDataObject.charge_state.charging_state,
-    logoutButtonProp: state.state.showLogoutButton
+    logoutButtonProp: state.state.showLogoutButton,
+    refreshTimeProp: state.state.refreshTime
   }
 }
 
