@@ -6,9 +6,11 @@ import {store} from './store/index.js';
 import './Assets/Styles/main.css';
 import Main from './Main';
 
+
 ReactDOM.render(
     //provider allows our App that is wrapped inside of it to 
     //have access to our store
+
     <CookiesProvider>
         <Provider store={store}>
             <Main />

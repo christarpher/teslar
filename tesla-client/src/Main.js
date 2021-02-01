@@ -17,6 +17,7 @@ import PinPrompt from './PinPrompt.js';
 import LogoutPrompt from './LogoutPrompt.js';
 import ConfirmationPrompt from './ConfirmationPrompt.js';
 import ErrorPrompt from './ErrorPrompt.js';
+import MetaTags from 'react-meta-tags';
 
 class Main extends Component{
   constructor(props){
@@ -109,6 +110,12 @@ class Main extends Component{
   render(){
     return(
       <div>
+          <MetaTags>
+            <title>Tesla Remote</title>
+            <meta name="description" content="Tesla Remote Web Application" />
+            <meta property="og:title" content="Tesla Remote" />
+            <meta property="og:image" content="/Assets/Images/tesla-remote.png" />
+          </MetaTags>
         <Header/>
         <main className="container--main_section">
           <Image/>
