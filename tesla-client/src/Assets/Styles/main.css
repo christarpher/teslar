@@ -26,6 +26,7 @@ body {
 
 .fas {
   color: #F8F9FA;
+  transition: 0.2s;
 }
 
 .fas.fa-backward:active {
@@ -69,6 +70,7 @@ body {
 
 .btn {
   margin: 5px;
+  transition: 0.2s;
   padding: 10px 15px;
   background-color: #07A298;
   border-radius: 3px;
@@ -80,6 +82,7 @@ body {
 
 .btn2 {
   margin: 5px;
+  transition: 0.2s;
   padding: 7px 12px;
   background-color: #07A298;
   border-radius: 3px;
@@ -376,6 +379,7 @@ body {
 
 .modal--media_controls .media-control_button {
   font-size: 35px;
+  transition: 0.2s;
   padding: 0 30px;
 }
 
@@ -395,10 +399,12 @@ body {
   border-radius: 50px;
   padding: 11px 5px;
   font-size: 21px;
+  transition: 0.2s;
 }
 
 .fa-playpause::before {
   content: "";
+  transition: 0.2s;
   color: #33333C;
 }
 .fa-playpause::before:active {
@@ -407,6 +413,7 @@ body {
 
 .fa-playpause::after {
   content: "";
+  transition: 0.2s;
   color: #33333C;
 }
 .fa-playpause::after:active {
@@ -428,18 +435,22 @@ body {
 
 .climate--seat_btn_level_0 i {
   color: #FFFFFF;
+  transition: 0.2s;
 }
 
 .climate--seat_btn_level_1 i {
   color: #da9e37;
+  transition: 0.2s;
 }
 
 .climate--seat_btn_level_2 i {
   color: #da6a37;
+  transition: 0.2s;
 }
 
 .climate--seat_btn_level_3 i {
   color: #DA3738;
+  transition: 0.2s;
 }
 
 .climate--front_seats button {
@@ -519,6 +530,11 @@ body {
 }
 #confirm--password {
   display: inline;
+}
+
+#confirm--text {
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 #enter--pin {

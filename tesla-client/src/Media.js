@@ -74,6 +74,8 @@ class MediaModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not toggle volume up");
       });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Volume up pressed!");
     }
   }
 
@@ -91,6 +93,8 @@ class MediaModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not toggle volume down");
       });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Volume down pressed!");
     }
   }
 
@@ -108,6 +112,8 @@ class MediaModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not toggle track forward");
       });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Next track pressed!");
     }
   }
 
@@ -125,6 +131,8 @@ class MediaModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not toggle track backwards");
       });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Previous track pressed!");
     }
   }
 
@@ -142,6 +150,8 @@ class MediaModal extends Component{
       .catch(function (error) {
         self.showError("Error: Could not play/pause the track");
       });
+    }else if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Play/Pause music pressed!");
     }
   }
 

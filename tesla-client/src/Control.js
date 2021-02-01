@@ -107,7 +107,7 @@ class ControlModal extends Component{
         self.showError("Error: Could not honk the vehicle horn");
       });
     }else if(this.state.localOptions.authToken === "faketoken"){
-      //self.showError("Horn Honked!");
+      self.showError("Horn Honked!");
     }
   }
 
@@ -127,7 +127,7 @@ class ControlModal extends Component{
         self.showError("Error: Could not flash the vehicle lights");
       });
     }else if(this.state.localOptions.authToken === "faketoken"){
-      //self.showError("Lights Flashed!");
+      self.showError("Lights Flashed!");
     }
   }
 
@@ -216,36 +216,42 @@ class ControlModal extends Component{
   }
 
   summonBackwards(){
-	axios.post('/summonBackward', {
-		email: this.props.emailProp,
-		auth: JSON.stringify(this.state.localOptions),
-		latitude: this.state.vehicleDataObject.drive_state.latitude,
-		longitude: this.state.vehicleDataObject.drive_state.longitude
-	})
-	.then(function(response){
-		//console.log(response);
-	})
-	.catch(function(error){
-		//console.log("Error - SummonBackward Command: " + error);
-	});
-	//alert("Summon Backwards pressed");
+    var self = this;
+    axios.post('/summonBackward', {
+      email: this.props.emailProp,
+      auth: JSON.stringify(this.state.localOptions),
+      latitude: this.state.vehicleDataObject.drive_state.latitude,
+      longitude: this.state.vehicleDataObject.drive_state.longitude
+    })
+    .then(function(response){
+      //console.log(response);
+    })
+    .catch(function(error){
+      //console.log("Error - SummonBackward Command: " + error);
+    });
+    if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Summoning vehicle backwards!");
+    }
   }
 
   summonForwards(){
-	//alert(this.props.emailProp);
-	axios.post('/summonForward', {
-		email: this.props.emailProp,
-		auth: JSON.stringify(this.state.localOptions),
-		latitude: this.state.vehicleDataObject.drive_state.latitude,
-		longitude: this.state.vehicleDataObject.drive_state.longitude
-	})
-	.then(function(response){
-		//console.log(response);
-	})
-	.catch(function(error){
-		//console.log("Error - SummonForward Command: " + error);
-	});
-	//alert("Summon Forwards pressed");
+    var self = this;
+    //alert(this.props.emailProp);
+    axios.post('/summonForward', {
+      email: this.props.emailProp,
+      auth: JSON.stringify(this.state.localOptions),
+      latitude: this.state.vehicleDataObject.drive_state.latitude,
+      longitude: this.state.vehicleDataObject.drive_state.longitude
+    })
+    .then(function(response){
+      //console.log(response);
+    })
+    .catch(function(error){
+      //console.log("Error - SummonForward Command: " + error);
+    });
+    if(this.state.localOptions.authToken === "faketoken"){
+      self.showError("Summoning vehicle forwards!");
+    }
   }
 
   summonAbort(){
@@ -259,7 +265,6 @@ class ControlModal extends Component{
 	.catch(function(error){
 	  //console.log("Error - SummonAbort Command: " + error);
 	});
-	//alert("Summon Aborted");
   }
 
   hideControlModal = () => {
