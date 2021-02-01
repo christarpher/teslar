@@ -112,9 +112,9 @@ class Main extends Component{
       <div>
           <MetaTags>
             <title>Tesla Remote</title>
-            <meta name="description" content="Tesla Remote Web Application" />
+            <meta property="og:description" content="Tesla Remote Web Application" />
             <meta property="og:title" content="Tesla Remote" />
-            <meta property="og:image" content="/Assets/Images/tesla-remote.png" />
+            <meta property="og:image" content="./tesla-remote.png" />
           </MetaTags>
         <Header/>
         <main className="container--main_section">
