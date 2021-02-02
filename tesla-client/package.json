@@ -7,7 +7,6 @@
     "react": "^16.8.1",
     "react-cookie": "^3.1.2",
     "react-dom": "^16.8.1",
-    "react-meta-tags": "^1.0.1",
     "react-rangeslider": "^2.2.0",
     "react-redux": "^7.0.2",
     "react-scripts": "^3.4.3",
