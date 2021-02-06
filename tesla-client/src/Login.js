@@ -134,8 +134,8 @@ class LoginModal extends Component {
     var self = this;
     self.showError("Disclaimer: In test mode, you are only testing the UI of the application. \
     The UI will use a fake vehicle that has been generated for you. No real vehicle will be affected by any actions performed in the \
-    test mode. Pins and passwords used to perform actions like starting the vehicle and enabling safety features will not be saved \
-    or checked. Additionally, confirmation boxes will show up for functions that don't give feedback without a real vehicle present. \
+    test mode. Pins and passwords used to perform actions like starting the vehicle and enabling safety features will not be checked \
+    or authenticated. Additionally, confirmation boxes will show up for functions that don't give feedback without a real vehicle present. \
     This test mode is purely for demonstration purposes.");
     store.dispatch({
       type: 'UPDATE_OBJECT',
